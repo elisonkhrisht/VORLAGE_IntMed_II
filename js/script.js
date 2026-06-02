@@ -7,7 +7,6 @@ const cities = {
 };
 
 const loader = document.querySelector("#loader");
-
 const uvCard = document.querySelector("#uv-card");
 const uvNumber = document.querySelector("#uv-number");
 const risk = document.querySelector("#risk");
@@ -21,10 +20,11 @@ const umbrellaIcon = document.querySelector("#umbrella-icon");
 
 const cityInput = document.querySelector("#city-input");
 const searchBtn = document.querySelector("#search-btn");
+const locationTimeP = document.querySelector("#location-time"); // для города
 
+// --- загрузка UV ---
 async function loadUV(lat, lon) {
   const url = `https://currentuvindex.com/api/v1/uvi?latitude=${lat}&longitude=${lon}`;
-
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -35,6 +35,7 @@ async function loadUV(lat, lon) {
   }
 }
 
+// --- поиск по имени города через Open-Meteo ---
 async function searchCity(cityName) {
   if (!cityName.trim()) {
     alert("Please enter a city");
@@ -65,6 +66,7 @@ async function searchCity(cityName) {
   }
 }
 
+// --- скрыть все иконки ---
 function hideIcons() {
   sunIcon.style.display = "none";
   sunglassesIcon.style.display = "none";
@@ -72,11 +74,12 @@ function hideIcons() {
   umbrellaIcon.style.display = "none";
 }
 
+// --- показать UV ---
 async function showUV(city) {
-    loader.style.display = 'flex';
-    const uvData = await loadUV(city.lat, city.lon);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    loader.style.display = 'none';
+  loader.style.display = "flex";
+  const uvData = await loadUV(city.lat, city.lon);
+  await new Promise(resolve => setTimeout(resolve, 500));
+  loader.style.display = "none";
 
   if (!uvData) {
     uvNumber.textContent = "Error";
@@ -84,15 +87,17 @@ async function showUV(city) {
     advice.textContent = "Please try again";
     warning.textContent = "Could not load UV data.";
     hideIcons();
+    locationTimeP.textContent = city.name; // показываем только город
     return;
   }
 
   const uv = uvData.now.uvi;
 
   uvNumber.textContent = `UV ${uv}`;
-
   uvCard.classList.remove("low", "medium", "high");
   hideIcons();
+
+  locationTimeP.textContent = city.name; // показываем только город
 
   if (uv < 3) {
     uvCard.classList.add("low");
@@ -116,36 +121,39 @@ async function showUV(city) {
   }
 }
 
+// --- анимация солнца ---
 let angle = 0;
 let time = 0;
-
 function animateSun() {
   angle += 0.8;
   time += 0.08;
-
   const scale = 1 + Math.sin(time) * 0.18;
-
   sunIcon.style.transform = `rotate(${angle}deg) scale(${scale})`;
-
   requestAnimationFrame(animateSun);
 }
-
 animateSun();
 
+// --- анимация зонтика ---
+let umbrellaTime = 0;
+function animateUmbrella() {
+  umbrellaTime += 0.04;
+  const rotation = Math.sin(umbrellaTime) * 8;
+  umbrellaIcon.style.transform = `rotate(${rotation}deg)`;
+  requestAnimationFrame(animateUmbrella);
+}
+animateUmbrella();
+
+// --- слушатели кнопок ---
 document.querySelector("#bern").addEventListener("click", () => showUV(cities.bern));
 document.querySelector("#tokyo").addEventListener("click", () => showUV(cities.tokyo));
 document.querySelector("#madrid").addEventListener("click", () => showUV(cities.madrid));
 document.querySelector("#newyork").addEventListener("click", () => showUV(cities.newyork));
 document.querySelector("#dubai").addEventListener("click", () => showUV(cities.dubai));
 
-searchBtn.addEventListener("click", () => {
-  searchCity(cityInput.value);
-});
-
+searchBtn.addEventListener("click", () => searchCity(cityInput.value));
 cityInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    searchCity(cityInput.value);
-  }
+  if (event.key === "Enter") searchCity(cityInput.value);
 });
 
+// --- показать по умолчанию ---
 showUV(cities.bern);

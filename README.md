@@ -1,3 +1,5 @@
 # VORLAGE_IntMed_II
 
-## Hallo
+## Hallo HH:MM UTC нужно знать часовой пояс по єтому еще один api
+
+##
