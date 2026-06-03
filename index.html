@@ -17,126 +17,134 @@
   <body>
     <header></header>
     <main>
-      <div class="search-bar">
-        <input
-          type="text"
-          id="city-input"
-          placeholder="Search city..."
-          list="cities"
-        />
-
-        <datalist id="cities">
-          <option value="Bern"></option>
-          <option value="Zurich"></option>
-          <option value="Geneva"></option>
-          <option value="Basel"></option>
-          <option value="Lausanne"></option>
-          <option value="Lugano"></option>
-          <option value="Paris"></option>
-          <option value="London"></option>
-          <option value="Berlin"></option>
-          <option value="Rome"></option>
-          <option value="Madrid"></option>
-          <option value="Barcelona"></option>
-          <option value="Amsterdam"></option>
-          <option value="Vienna"></option>
-          <option value="Prague"></option>
-          <option value="Stockholm"></option>
-          <option value="New York"></option>
-          <option value="Los Angeles"></option>
-          <option value="Chicago"></option>
-          <option value="Miami"></option>
-          <option value="Toronto"></option>
-          <option value="Tokyo"></option>
-          <option value="Osaka"></option>
-          <option value="Seoul"></option>
-          <option value="Beijing"></option>
-          <option value="Shanghai"></option>
-          <option value="Hong Kong"></option>
-          <option value="Singapore"></option>
-          <option value="Bangkok"></option>
-          <option value="Dubai"></option>
-          <option value="Istanbul"></option>
-          <option value="Sydney"></option>
-          <option value="Melbourne"></option>
-          <option value="Cape Town"></option>
-          <option value="Rio de Janeiro"></option>
-          <option value="Chur"></option>
-        </datalist>
-
-        <button id="search-btn">Search</button>
-      </div>
-
-      <div class="city-buttons">
-        <button id="bern">Bern</button>
-        <button id="tokyo">Tokyo</button>
-        <button id="madrid">Madrid</button>
-        <button id="newyork">New York</button>
-        <button id="dubai">Dubai</button>
-      </div>
-
-      <div class="loading-overlay" id="loader">
-        <img src="icons/loading.svg" alt="Loading" class="loader-svg" />
-      </div>
-
-      <section class="uv-card low" id="uv-card">
-        <div class="wave"></div>
-
-        <h2 class="title">UV level at a glance</h2>
-
-        <p class="intro">
-          The UV index shows how strong the sun is, even when you don't feel
-          it.<br />
-          Checking it helps protect your skin and reduce the risk of damage
-          and<br />
-          skin cancer.
-        </p>
-
-        <div class="side-info">
-          <div class="time-item">
-            <img
-              src="icons/best-time-icon.svg"
-              alt="Best time"
-              class="time-icon"
-            />
-            <p><strong>Best time</strong><br />09:00–13:00</p>
-          </div>
-
-          <div class="time-item">
-            <img
-              src="icons/avoid-icon.svg"
-              alt="Avoid time"
-              class="time-icon"
-            />
-            <p><strong>Avoid</strong><br />15:00–18:00</p>
-          </div>
+      <div class="content-wrapper">
+        <img src="icons/fur.png" alt="Fur-thick coverage" class="hero-title" />
+        <div class="search-bar">
+          <input
+            type="text"
+            id="city-input"
+            placeholder="Search city..."
+            list="cities"
+          />
+          <datalist id="cities">
+            <option value="Bern"></option>
+            <option value="Zurich"></option>
+            <option value="Geneva"></option>
+            <option value="Basel"></option>
+            <option value="Lausanne"></option>
+            <option value="Lugano"></option>
+            <option value="Paris"></option>
+            <option value="London"></option>
+            <option value="Berlin"></option>
+            <option value="Rome"></option>
+            <option value="Madrid"></option>
+            <option value="Barcelona"></option>
+            <option value="Amsterdam"></option>
+            <option value="Vienna"></option>
+            <option value="Prague"></option>
+            <option value="Stockholm"></option>
+            <option value="New York"></option>
+            <option value="Los Angeles"></option>
+            <option value="Chicago"></option>
+            <option value="Miami"></option>
+            <option value="Toronto"></option>
+            <option value="Tokyo"></option>
+            <option value="Osaka"></option>
+            <option value="Seoul"></option>
+            <option value="Beijing"></option>
+            <option value="Shanghai"></option>
+            <option value="Hong Kong"></option>
+            <option value="Singapore"></option>
+            <option value="Bangkok"></option>
+            <option value="Dubai"></option>
+            <option value="Istanbul"></option>
+            <option value="Sydney"></option>
+            <option value="Melbourne"></option>
+            <option value="Cape Town"></option>
+            <option value="Rio de Janeiro"></option>
+            <option value="Chur"></option>
+          </datalist>
+          <button id="search-btn">Search</button>
         </div>
 
-        <div class="info-box">
-          <p id="risk">Low risk</p>
-          <div id="uv-number">UV 1</div>
-          <p id="advice">No protection required</p>
-          <p id="location-time">City – 00:00</p>
+        <div class="city-buttons">
+          <button id="bern">Bern</button>
+          <button id="tokyo">Tokyo</button>
+          <button id="madrid">Madrid</button>
+          <button id="newyork">New York</button>
+          <button id="dubai">Dubai</button>
         </div>
 
-        <img
-          src="icons/bearlow.png"
-          id="bear-low"
-          class="bear"
-          data-tooltip="Perfect for a polar bear!"
-        />
-        <img
-          src="icons/bearmedium.png"
-          id="bear-medium"
-          class="bear"
-          data-tooltip="Getting warm...&#10;good thing I have&#10;ice cream."
-        />
-        <img
-          src="icons/bearhigh.png"
-          id="bear-high"
-          class="bear"
-          data-tooltip="I'm a POLAR bear.&#10;POLAAAAR. &#10;This heat is illegal."
-        />
+        <section class="uv-card low" id="uv-card">
+          <div class="loading-overlay" id="loader">
+            <img src="icons/loading.svg" alt="Loading" class="loader-svg" />
+          </div>
+          <div class="wave"></div>
+          <h2 class="title">UV level at a glance</h2>
+          <p class="intro">
+            The UV index shows how strong the sun is, even when you don't feel
+            it.<br />
+            Checking it helps protect your skin and reduce the risk of damage
+            and<br />
+            skin cancer.
+          </p>
+          <div class="side-info">
+            <div class="time-item">
+              <img
+                src="icons/best-time-icon.svg"
+                alt="Best time"
+                class="time-icon"
+              />
+              <p><strong>Best time</strong><br />09:00–13:00</p>
+            </div>
+            <div class="time-item">
+              <img
+                src="icons/avoid-icon.svg"
+                alt="Avoid time"
+                class="time-icon"
+              />
+              <p><strong>Avoid</strong><br />15:00–18:00</p>
+            </div>
+          </div>
+          <div class="info-box">
+            <p id="risk">Low risk</p>
+            <div id="uv-number">UV 1</div>
+            <p id="advice">No protection required</p>
+            <p id="location-time">City – 00:00</p>
+          </div>
+          <img
+            src="icons/bearlow.png"
+            id="bear-low"
+            class="bear"
+            data-tooltip="Perfect even for a polar bear!"
+          />
+          <img
+            src="icons/bearmedium.png"
+            id="bear-medium"
+            class="bear"
+            data-tooltip="Getting warm...&#10;good thing I have&#10;ice cream."
+          />
+          <img
+            src="icons/bearhigh.png"
+            id="bear-high"
+            class="bear"
+            data-tooltip="I'm a POLAR bear.&#10;POLAAAAR. &#10;This heat is illegal."
+          />
+          <div class="icon">
+            <img src="icons/sun-icon.svg" id="sun-icon" />
+            <img src="icons/sunglasses-icon.svg" id="sunglasses-icon" />
+            <img src="icons/sunscreen-icon.png" id="sunscreen-icon" />
+            <img src="icons/umbrella-icon.png" id="umbrella-icon" />
+          </div>
+          <p class="warning" id="warning">
+            Warning: UV will increase later today.
+          </p>
+        </section>
+      </div>
+    </main>
 
-        <div class="icon">
-          <img src="icons
+    <footer></footer>
+
+    <script src="js/script.js" type="module"></script>
+  </body>
+</html>

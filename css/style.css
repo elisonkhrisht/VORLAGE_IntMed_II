@@ -45,7 +45,7 @@ button {
     overflow: hidden;
     color: white;
     background: linear-gradient(180deg, #9fc9f0 0%, #817df0 100%);
-    border-radius: 0;
+    border-radius: 30px;
     box-shadow: none;
 }
 
@@ -292,6 +292,8 @@ button {
     
 }
 
+
+
 #search-btn {
     height: 48px;
 
@@ -339,11 +341,13 @@ button {
     color: #8B8BF7; /* можно задать цвет текста, чтобы совпадал с остальными элементами */
     font-size: 24px;
     font-weight: 600;
-    max-height: 40px;   /* ограничение высоты */
-    overflow: hidden;   /* обрезает лишнее */
-    text-overflow: ellipsis; /* если сильно длинное название */
-    white-space: nowrap;
+   
 }
+
+    #location-time.small {
+    font-size: 20px;
+}
+
 
 /* все кнопки */
 button {
@@ -367,9 +371,10 @@ button:hover {
 
 /* Состояние выбранного города */
 .city-buttons button.active {
-  background-color: #7e79ed; /* фиолетовый, можно поменять */
+  background-color: #7e79ed;
   color: white;
-  border: 2px solid #FFD166; /* тёмная рамка */
+  box-shadow: 0 0 0 4px #FFD166;
+  border: none;
 }
 
 
@@ -385,9 +390,9 @@ button:hover {
 }
 
 .forecast-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
-  color: #474444;
+  color: #ffffff;
   margin: 0 0 16px 0;
   text-align: left;
   width: 100%;
@@ -494,3 +499,55 @@ button:hover {
   opacity: 1;
 }
 
+.bear {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.bear:hover {
+  transform: scale(1.08);
+}
+
+.content-wrapper {
+  width: 750px;
+  position: relative;
+}
+
+.hero-title {
+  display: block;
+  width: 260px;
+  height: auto;
+  position: absolute;
+  right: -160px;
+  top: 30px;
+  filter: drop-shadow(0px 6px 20px rgba(0,0,0,0.35));
+  z-index: 100;
+}
+
+body {
+    background: #9aa9ff;
+    position: relative;
+}
+.hero-title {
+  filter: drop-shadow(0px 6px 20px rgba(0,0,0,0.35));
+}
+
+
+
+#daily-forecast {
+  transition: opacity 0.3s ease;
+}
+
+#city-input:focus {
+  outline: 2px solid #FFD166;
+  outline-offset: 0px;
+}
+
+#uv-card {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#uv-card.loaded {
+    opacity: 1;
+}

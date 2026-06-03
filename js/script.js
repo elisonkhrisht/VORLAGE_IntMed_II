@@ -90,12 +90,26 @@ function getCityTime(timezone) {
 }
 
 // --- Главная функция показа UV ---
-async function showUV(city) {
-  loader.style.display = "flex";
-  const uvData = await loadUV(city.lat, city.lon);
-  await new Promise(resolve => setTimeout(resolve, 500));
-  loader.style.display = "none";
+async function showUV(city, skipLoader = false) {
+  localStorage.setItem("lastCity", JSON.stringify(city));
 
+  if (!skipLoader) {
+    loader.style.display = "flex";
+    document.querySelectorAll(".forecast-card").forEach(card => card.style.filter = "brightness(0.85)");
+    const uvData = await loadUV(city.lat, city.lon);
+    await new Promise(resolve => setTimeout(resolve, 200));
+    loader.style.display = "none";
+    uvCard.classList.add("loaded");
+    document.querySelectorAll(".forecast-card").forEach(card => card.style.filter = "brightness(1)");
+    return processUVData(city, uvData);
+  } else {
+    const uvData = await loadUV(city.lat, city.lon);
+    return processUVData(city, uvData);
+  }
+}
+
+// --- Обработка UV данных ---
+function processUVData(city, uvData) {
   if (!uvData) {
     uvNumber.textContent = "Error";
     risk.textContent = "No data";
@@ -119,7 +133,6 @@ async function showUV(city) {
     warning.textContent = "UV is low at the moment.";
     sunIcon.style.display = "block";
     document.querySelector("#bear-low").style.display = "block";
-    
   } else if (uv < 6) {
     uvCard.classList.add("medium");
     risk.textContent = "Medium risk";
@@ -128,7 +141,6 @@ async function showUV(city) {
     sunglassesIcon.style.display = "block";
     sunscreenIcon.style.display = "block";
     document.querySelector("#bear-medium").style.display = "block";
-
   } else {
     uvCard.classList.add("high");
     risk.textContent = "High risk";
@@ -138,11 +150,28 @@ async function showUV(city) {
     document.querySelector("#bear-high").style.display = "block";
   }
 
-  // Город · время рядом
+  // --- Город · время рядом ---
   const cityTime = getCityTime(city.timezone);
-  locationTime.textContent = cityTime
-    ? `${city.name} · ${cityTime}`
-    : city.name;
+
+  if (city.name.length > 10) {
+    locationTime.classList.add("small");
+    document.querySelector(".info-box").style.maxHeight = "190px";
+    locationTime.innerHTML = cityTime
+      ? `${city.name} ·<br>${cityTime}`
+      : city.name;
+  } else if (city.name.length > 7) {
+    locationTime.classList.add("small");
+    document.querySelector(".info-box").style.maxHeight = "170px";
+    locationTime.textContent = cityTime
+      ? `${city.name} · ${cityTime}`
+      : city.name;
+  } else {
+    locationTime.classList.remove("small");
+    document.querySelector(".info-box").style.maxHeight = "170px";
+    locationTime.textContent = cityTime
+      ? `${city.name} · ${cityTime}`
+      : city.name;
+  }
 
   // --- Best / Avoid time из forecast ---
   const hourly = uvData.forecast;
@@ -170,22 +199,20 @@ function displayDailyForecast(city, forecast) {
     document.querySelector("main").appendChild(forecastContainer);
   }
 
-  // Берём все записи за следующие 24 часа от текущего момента
   const now = Date.now();
   const in24h = now + 24 * 60 * 60 * 1000;
   const todayEntries = forecast.filter(e => {
     const t = new Date(e.time).getTime();
-    return t >= now - 60 * 60 * 1000 && t <= in24h; // +1ч назад чтобы текущий час попал
+    return t >= now - 60 * 60 * 1000 && t <= in24h;
   });
 
   const periods = {
-    "Morning":   { hours: [5, 6, 7, 8, 9, 10],      entries: [] },
-    "Afternoon": { hours: [11, 12, 13, 14, 15, 16],  entries: [] },
-    "Evening":   { hours: [17, 18, 19, 20, 21],      entries: [] },
+    "Morning":   { hours: [5, 6, 7, 8, 9, 10],     entries: [] },
+    "Afternoon": { hours: [11, 12, 13, 14, 15, 16], entries: [] },
+    "Evening":   { hours: [17, 18, 19, 20, 21],     entries: [] },
   };
 
   todayEntries.forEach(e => {
-    // Берём локальный час города, а не UTC
     const localHour = parseInt(new Intl.DateTimeFormat("en-GB", {
       hour: "2-digit",
       timeZone: city.timezone || "UTC"
@@ -196,25 +223,17 @@ function displayDailyForecast(city, forecast) {
   });
 
   forecastContainer.innerHTML = `
-    <h3 class="forecast-title">${city.name} — UV forecast </h3>
+    <h3 class="forecast-title">${city.name} — UV forecast</h3>
     <div class="forecast-cards">
       ${Object.entries(periods).map(([name, period]) => {
         const max = period.entries.length ? Math.max(...period.entries) : 0;
         const cardClass = max < 3 ? "low" : max < 6 ? "medium" : "high";
-        const riskLabel =
-          max < 3 ? "Low risk" :
-          max < 6 ? "Medium risk" :
-          max < 8 ? "High risk" :
-                    "Very high risk";
-        const adviceText =
-          max < 3 ? "No protection needed" :
-          max < 6 ? "Wear sunscreen SPF 30+" :
-          max < 8 ? "Limit time in sun" :
-                    "Avoid sun exposure";
+        const riskLabel = max < 3 ? "Low risk" : max < 6 ? "Medium risk" : max < 8 ? "High risk" : "Very high risk";
+        const adviceText = max < 3 ? "No protection needed" : max < 6 ? "Wear sunscreen SPF 30+" : max < 8 ? "Limit time in sun" : "Avoid sun exposure";
         return `
           <div class="forecast-card ${cardClass}">
             <div class="forecast-period">${name}</div>
-            <div class="forecast-uvi">${max}</div>
+            <div class="forecast-uvi">UV ${max}</div>
             <div class="forecast-risk">${riskLabel}</div>
             <div class="forecast-advice">${adviceText}</div>
           </div>
@@ -305,4 +324,38 @@ cityButtons.forEach(button => {
 });
 
 // --- Старт ---
-showUV(cities.bern);
+const savedCity = localStorage.getItem("lastCity");
+if (savedCity) {
+  const c = JSON.parse(savedCity);
+  // Подсвечиваем кнопку если это один из preset городов
+  cityButtons.forEach(btn => {
+    if (btn.textContent.trim().toLowerCase() === c.name.toLowerCase()) {
+      btn.classList.add("active");
+    }
+  });
+  showUV(c);
+} else {
+  // Первый раз — Берн без лоадера
+  uvCard.classList.add("loaded");
+  showUV(cities.bern, true);
+}
+
+// --- Tooltip для мишек ---
+document.querySelectorAll(".bear").forEach(bear => {
+  const tooltip = document.createElement("div");
+  tooltip.className = "bear-tooltip";
+  tooltip.textContent = bear.dataset.tooltip;
+  bear.parentElement.appendChild(tooltip);
+
+  bear.addEventListener("mouseenter", () => {
+    const rect = bear.getBoundingClientRect();
+    const parentRect = bear.parentElement.getBoundingClientRect();
+    tooltip.style.left = (rect.left - parentRect.left + rect.width / 2) + "px";
+    tooltip.style.bottom = (parentRect.bottom - rect.top + 8) + "px";
+    tooltip.classList.add("visible");
+  });
+
+  bear.addEventListener("mouseleave", () => {
+    tooltip.classList.remove("visible");
+  });
+});
