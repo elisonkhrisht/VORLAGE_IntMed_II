@@ -22,7 +22,6 @@ const cityInput = document.querySelector("#city-input");
 const searchBtn = document.querySelector("#search-btn");
 const locationTime = document.querySelector("#location-time");
 
-// --- Загрузка UV данных ---
 async function loadUV(lat, lon) {
   const url = `https://currentuvindex.com/api/v1/uvi?latitude=${lat}&longitude=${lon}`;
   try {
@@ -35,7 +34,6 @@ async function loadUV(lat, lon) {
   }
 }
 
-// --- Геокодинг по названию города ---
 async function searchCity(cityName) {
   if (!cityName.trim()) {
     alert("Please enter a city");
@@ -67,7 +65,6 @@ async function searchCity(cityName) {
   }
 }
 
-// --- Скрыть все иконки ---
 function hideIcons() {
   sunIcon.style.display = "none";
   sunglassesIcon.style.display = "none";
@@ -78,18 +75,11 @@ function hideIcons() {
   document.querySelector("#bear-medium").style.display = "none";
   document.querySelector("#bear-high").style.display = "none";
 
-
-// Скрываем колу и убираем hint
- const cola = document.querySelector("#cola-can");
+  const cola = document.querySelector("#cola-can");
   if (cola) cola.style.display = "none";
   document.querySelector(".bear-hint")?.remove();
-
-
 }
 
-
-
-// --- Время города ---
 function getCityTime(timezone) {
   if (!timezone) return "";
   return new Intl.DateTimeFormat("en-GB", {
@@ -99,7 +89,6 @@ function getCityTime(timezone) {
   }).format(new Date());
 }
 
-// --- Главная функция показа UV ---
 async function showUV(city, skipLoader = false) {
   localStorage.setItem("lastCity", JSON.stringify(city));
 
@@ -118,7 +107,6 @@ async function showUV(city, skipLoader = false) {
   }
 }
 
-// --- Обработка UV данных ---
 function processUVData(city, uvData) {
   if (!uvData) {
     uvNumber.textContent = "Error";
@@ -144,7 +132,6 @@ function processUVData(city, uvData) {
     sunIcon.style.display = "block";
     document.querySelector("#bear-low").style.display = "block";
     setTimeout(initColaDrag, 1500);
-    
   } else if (uv < 6) {
     uvCard.classList.add("medium");
     risk.textContent = "Medium risk";
@@ -162,30 +149,22 @@ function processUVData(city, uvData) {
     document.querySelector("#bear-high").style.display = "block";
   }
 
-  // --- Город · время рядом ---
   const cityTime = getCityTime(city.timezone);
 
   if (city.name.length > 10) {
     locationTime.classList.add("small");
     document.querySelector(".info-box").style.maxHeight = "190px";
-    locationTime.innerHTML = cityTime
-      ? `${city.name} ·<br>${cityTime}`
-      : city.name;
+    locationTime.innerHTML = cityTime ? `${city.name} ·<br>${cityTime}` : city.name;
   } else if (city.name.length > 7) {
     locationTime.classList.add("small");
     document.querySelector(".info-box").style.maxHeight = "170px";
-    locationTime.textContent = cityTime
-      ? `${city.name} · ${cityTime}`
-      : city.name;
+    locationTime.textContent = cityTime ? `${city.name} · ${cityTime}` : city.name;
   } else {
     locationTime.classList.remove("small");
     document.querySelector(".info-box").style.maxHeight = "170px";
-    locationTime.textContent = cityTime
-      ? `${city.name} · ${cityTime}`
-      : city.name;
+    locationTime.textContent = cityTime ? `${city.name} · ${cityTime}` : city.name;
   }
 
-  // --- Best / Avoid time из forecast ---
   const hourly = uvData.forecast;
   const minUV = Math.min(...hourly.map(h => h.uvi));
   const maxUV = Math.max(...hourly.map(h => h.uvi));
@@ -198,11 +177,9 @@ function processUVData(city, uvData) {
   bestP.innerHTML = `<strong>Best time</strong><br>${new Date(bestHour.time).getHours()}:00–${new Date(bestHour.time).getHours() + 1}:00`;
   avoidP.innerHTML = `<strong>Avoid</strong><br>${new Date(avoidHour.time).getHours()}:00–${new Date(avoidHour.time).getHours() + 1}:00`;
 
-  // --- Дневной прогноз ---
   displayDailyForecast(city, uvData.forecast);
 }
 
-// --- Прогноз Утро / День / Вечер ---
 function displayDailyForecast(city, forecast) {
   let forecastContainer = document.querySelector("#daily-forecast");
   if (!forecastContainer) {
@@ -255,7 +232,6 @@ function displayDailyForecast(city, forecast) {
   `;
 }
 
-// --- Анимация солнца ---
 let angle = 0;
 let time = 0;
 
@@ -268,7 +244,6 @@ function animateSun() {
 }
 animateSun();
 
-// --- Анимация зонтика ---
 let umbrellaTime = 0;
 
 function animateUmbrella() {
@@ -279,7 +254,6 @@ function animateUmbrella() {
 }
 animateUmbrella();
 
-// --- Анимация крема ---
 if (sunscreenIcon) {
   let scale = 1;
   const maxScale = 1.3;
@@ -313,20 +287,17 @@ if (sunscreenIcon) {
   animateSunscreenScale();
 }
 
-// --- Кнопки городов ---
 document.querySelector("#bern").addEventListener("click", () => showUV(cities.bern));
 document.querySelector("#tokyo").addEventListener("click", () => showUV(cities.tokyo));
 document.querySelector("#madrid").addEventListener("click", () => showUV(cities.madrid));
 document.querySelector("#newyork").addEventListener("click", () => showUV(cities.newyork));
 document.querySelector("#dubai").addEventListener("click", () => showUV(cities.dubai));
 
-// --- Поиск ---
 searchBtn.addEventListener("click", () => searchCity(cityInput.value));
 cityInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") searchCity(cityInput.value);
 });
 
-// --- Активная кнопка ---
 const cityButtons = document.querySelectorAll(".city-buttons button");
 cityButtons.forEach(button => {
   button.addEventListener("click", () => {
@@ -335,11 +306,9 @@ cityButtons.forEach(button => {
   });
 });
 
-// --- Старт ---
 const savedCity = localStorage.getItem("lastCity");
 if (savedCity) {
   const c = JSON.parse(savedCity);
-  // Подсвечиваем кнопку если это один из preset городов
   cityButtons.forEach(btn => {
     if (btn.textContent.trim().toLowerCase() === c.name.toLowerCase()) {
       btn.classList.add("active");
@@ -347,88 +316,113 @@ if (savedCity) {
   });
   showUV(c);
 } else {
-  // Первый раз — Берн без лоадера
   uvCard.classList.add("loaded");
   showUV(cities.bern, true);
 }
 
-// --- Tooltip для мишек ---
 document.querySelectorAll(".bear").forEach(bear => {
   const tooltip = document.createElement("div");
   tooltip.className = "bear-tooltip";
   tooltip.textContent = bear.dataset.tooltip;
-  document.querySelector("#uv-card").appendChild(hint);
+  bear.parentElement.appendChild(tooltip);
 
   bear.addEventListener("mouseenter", () => {
     const cola = document.querySelector("#cola-can");
     const colaGiven = !cola || cola.style.display === "none";
-
-    // Для bear-low показываем tooltip только если кола уже отдана
     if (bear.id === "bear-low" && !colaGiven) return;
 
     const rect = bear.getBoundingClientRect();
     const parentRect = bear.parentElement.getBoundingClientRect();
-    tooltip.style.left = (rect.left - parentRect.left + rect.width / 2) + "px";
-    tooltip.style.bottom = (parentRect.bottom - rect.top + 8) + "px";
+if (window.innerWidth > 480) {
+  tooltip.style.left = (rect.left - parentRect.left + rect.width / 2) + "px";
+  tooltip.style.bottom = (parentRect.bottom - rect.top + 8) + "px";
+} else {
+  tooltip.style.left = "50%";
+  tooltip.style.bottom = "170px";
+}
     tooltip.classList.add("visible");
   });
 
   bear.addEventListener("mouseleave", () => {
     tooltip.classList.remove("visible");
   });
-});
 
-
-
-
-function initColaDrag() {
+  
+});function initColaDrag() {
   const cola = document.querySelector("#cola-can");
   const bear = document.querySelector("#bear-low");
-  if (!cola || !bear) return;
+  const card = document.querySelector("#uv-card");
 
-  // На мобильном перемещаем колу после мишки
-  if (window.innerWidth <= 480) {
-    bear.parentElement.insertAdjacentElement("afterend", cola);
-    cola.style.cssText = "display: block; width: 55px; margin: 8px auto 0 auto; position: static;";
-  } else {
-    cola.style.display = "block";
-  }
+  if (!cola || !bear || !card) return;
 
-  // Показываем hint на мишке
-  
+  cola.style.display = "block";
+  cola.setAttribute("draggable", "false");
+  cola.style.touchAction = "none";
+
+  document.querySelector(".bear-hint")?.remove();
+
   const hint = document.createElement("div");
   hint.className = "bear-hint bear-hint--persistent";
   hint.textContent = "Pass me a refreshment, please 🥤";
-  hint.style.animation = "none"; 
-  hint.style.opacity = "1";  
-  bear.parentElement.appendChild(hint);
+  card.appendChild(hint);
 
-  cola.style.display = "block";
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
 
-  // Drag events
-  cola.addEventListener("dragstart", (e) => {
-    e.dataTransfer.setData("text/plain", "cola");
+  cola.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+
+    cola.style.transition = "none";
+    cola.style.zIndex = "9999";
+    cola.style.transform = "translate(0, 0) scale(1.1)";
+
+    cola.setPointerCapture(e.pointerId);
   });
 
-  bear.addEventListener("dragover", (e) => {
-    e.preventDefault();
+  cola.addEventListener("pointermove", (e) => {
+    if (!isDragging) return;
+
+    const moveX = e.clientX - startX;
+    const moveY = e.clientY - startY;
+
+    cola.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.1)`;
   });
 
-  bear.addEventListener("drop", (e) => {
-    e.preventDefault();
-    // Кола исчезает
-    cola.style.display = "none";
-    // Hint убирается
-    document.querySelector(".bear-hint")?.remove();
-    // Показываем tooltip мишки
-    const tooltip = bear.parentElement.querySelector(".bear-tooltip");
-    if (tooltip) {
-      const rect = bear.getBoundingClientRect();
-      const parentRect = bear.parentElement.getBoundingClientRect();
-      tooltip.style.left = (rect.left - parentRect.left + rect.width / 2) + "px";
-      tooltip.style.bottom = (parentRect.bottom - rect.top + 8) + "px";
-      tooltip.classList.add("visible");
-      setTimeout(() => tooltip.classList.remove("visible"), 3000);
+  cola.addEventListener("pointerup", () => {
+    if (!isDragging) return;
+
+    isDragging = false;
+
+    const colaRect = cola.getBoundingClientRect();
+    const bearRect = bear.getBoundingClientRect();
+
+    const colaCenterX = colaRect.left + colaRect.width / 2;
+    const colaCenterY = colaRect.top + colaRect.height / 2;
+
+    const isOnBear =
+      colaCenterX >= bearRect.left &&
+      colaCenterX <= bearRect.right &&
+      colaCenterY >= bearRect.top &&
+      colaCenterY <= bearRect.bottom;
+
+    if (isOnBear) {
+      cola.style.display = "none";
+      cola.style.transform = "";
+      document.querySelector(".bear-hint")?.remove();
+
+      const tooltip = bear.parentElement.querySelector(".bear-tooltip");
+      if (tooltip) {
+        tooltip.classList.add("visible");
+        setTimeout(() => tooltip.classList.remove("visible"), 3000);
+      }
+    } else {
+      cola.style.transition = "transform 0.25s ease";
+      cola.style.transform = "translate(0, 0)";
     }
   });
 }

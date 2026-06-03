@@ -581,8 +581,8 @@ body {
   width: 70px;
   height: auto;
   position: absolute;
-  right: -10px;
-  bottom: -80px;
+  right: 15px;
+  bottom: 15px;
   cursor: grab;
   z-index: 5;
   transition: transform 0.2s ease;
@@ -942,13 +942,7 @@ body {
     order: 8;
   }
 
-  .bear-hint {
-    bottom: auto;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-  }
+  
 
   /* --- Forecast --- */
   #daily-forecast {
@@ -978,12 +972,7 @@ body {
   }
 }
 
-@media (max-width: 480px) {
-  /* Прячем колу внутри .icon на мобильном */
-  .icon #cola-can {
-    display: none !important;
-  }
-}
+
 
 @media (max-width: 480px) {
  .bear-hint {
@@ -1010,3 +999,29 @@ body {
 }
 }
 
+@media (max-width: 480px) {
+  #cola-can {
+
+    display: none;
+    width: 55px;
+    margin: 8px auto;
+    order: 72;
+  }
+}
+
+#cola-can {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 480px) {
+  .bear-tooltip {
+    left: 50%;
+    bottom: 170px;
+    transform: translateX(-50%);
+    max-width: 180px;
+    text-align: center;
+    white-space: normal;
+  }
+}
