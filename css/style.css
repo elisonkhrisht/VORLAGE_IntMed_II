@@ -515,11 +515,11 @@ button:hover {
 
 .hero-title {
   display: block;
-  width: 260px;
+  width: 350px;
   height: auto;
   position: absolute;
-  right: -160px;
-  top: 30px;
+  right: -215px;
+  top: -15px;
   filter: drop-shadow(0px 6px 20px rgba(0,0,0,0.35));
   z-index: 100;
 }
@@ -551,3 +551,462 @@ body {
 #uv-card.loaded {
     opacity: 1;
 }
+
+.bear-hint {
+  position: absolute;
+  bottom: 230px;
+  left: 30px;
+  background: white;
+  color: #1d1d1d;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: fadeInOut 3s ease forwards;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+#cola-can {
+  display: none;
+  width: 70px;
+  height: auto;
+  position: absolute;
+  right: -10px;
+  bottom: -80px;
+  cursor: grab;
+  z-index: 5;
+  transition: transform 0.2s ease;
+}
+
+#cola-can:hover {
+  transform: scale(1.1);
+}
+
+#cola-can:active {
+  cursor: grabbing;
+}
+
+.bear-hint--persistent {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+
+
+/* === TABLET (до 900px) === */
+@media (max-width: 900px) {
+  .content-wrapper {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .uv-card {
+    width: 100%;
+    height: auto;
+    min-height: 420px;
+  }
+
+  #daily-forecast {
+    width: 100%;
+  }
+
+  .hero-title {
+    display: none;
+  }
+}
+
+/* === MOBILE (до 600px) === */
+@media (max-width: 600px) {
+  body {
+    padding: 20px 16px;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  #city-input {
+    width: 100%;
+    min-width: unset;
+    flex: 1;
+  }
+
+  .city-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .city-buttons button {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+
+  .uv-card {
+    width: 100%;
+    min-height: 380px;
+    border-radius: 20px;
+  }
+
+  .wave {
+    clip-path: path("M0 0 H110 C85 80 83 150 95 210 C112 290 105 345 72 380 H0 Z");
+    width: 130px;
+  }
+
+  .title {
+    font-size: 20px;
+    transform: translateX(35px);
+    top: 30px;
+  }
+
+  .intro {
+    display: none;
+  }
+
+  .side-info {
+    left: 170px;
+    top: 160px;
+    font-size: 12px;
+  }
+
+  .info-box {
+    right: 10px;
+    top: 130px;
+    width: 180px;
+    padding: 12px 16px;
+  }
+
+  #uv-number {
+    font-size: 40px;
+  }
+
+  #location-time {
+    font-size: 16px;
+  }
+
+  #location-time.small {
+    font-size: 13px;
+  }
+
+  .warning {
+    left: 170px;
+    bottom: 20px;
+    width: 200px;
+  }
+
+  #bear-low, #bear-medium, #bear-high {
+    width: 180px;
+  }
+
+  .icon {
+    right: 5px;
+    top: 120px;
+    width: 130px;
+    height: 180px;
+  }
+
+  .forecast-cards {
+    flex-direction: column;
+  }
+
+  .forecast-uvi {
+    font-size: 36px;
+  }
+}
+
+/* === TABLET (до 900px) === */
+@media (max-width: 900px) {
+  .content-wrapper {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .uv-card {
+    width: 100%;
+    height: auto;
+    min-height: 420px;
+  }
+
+  #daily-forecast {
+    width: 100%;
+  }
+}
+
+/* === MOBILE (до 480px) === */
+@media (max-width: 480px) {
+
+  body {
+    padding: 0;
+    background: linear-gradient(180deg, #9fc9f0 0%, #7e79ed 100%);
+    align-items: stretch;
+  }
+
+  main {
+    width: 100%;
+  }
+
+  .content-wrapper {
+    width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* --- Лого вверху --- */
+  .hero-title {
+    position: static;
+    display: block;
+    width: 200px;
+    height: auto;
+    margin: 24px auto 16px auto;
+    filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2));
+    z-index: 1;
+  }
+
+  /* --- Поиск --- */
+  .search-bar {
+    margin: 0 16px 12px 16px;
+    width: auto;
+  }
+
+  #city-input {
+    width: 100%;
+    min-width: unset;
+    flex: 1;
+    background: rgba(255,255,255,0.9);
+  }
+
+  /* --- Кнопки городов --- */
+  .city-buttons {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 16px 16px 16px;
+    justify-content: center;
+  }
+
+  .city-buttons button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  /* --- Карточка UV --- */
+  .uv-card {
+    width: 100%;
+    height: auto;
+    min-height: unset;
+    border-radius: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px 24px 16px;
+    background: transparent !important;
+  }
+
+  .wave {
+    display: none;
+  }
+
+  /* 1. Заголовок */
+  .title {
+    position: static;
+    transform: none;
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 8px;
+    order: 1;
+  }
+
+  /* 2. Интро текст */
+  .intro {
+    position: static;
+    width: 100%;
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 16px;
+    order: 2;
+  }
+
+  /* 3. Info box */
+  .info-box {
+    position: static;
+    width: 100%;
+    max-height: none !important;
+    border-radius: 20px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+    order: 3;
+  }
+
+  #uv-number {
+    font-size: 60px;
+  }
+
+  #location-time {
+    font-size: 18px;
+  }
+
+  #location-time.small {
+    font-size: 14px;
+  }
+
+  /* 4. Side info (Best time / Avoid) */
+  .side-info {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    justify-content: center;
+    margin-bottom: 16px;
+    order: 4;
+  }
+
+  .side-info p {
+    margin: 0;
+    font-size: 13px;
+  }
+
+  .time-item {
+    margin-bottom: 0;
+  }
+
+  /* 5. Иконка солнца — справа вверху карточки */
+  .icon {
+    position: absolute;
+    right: 10px;
+    top: 120px;
+    width: 100px;
+    height: 100px;
+    order: 5;
+  }
+
+  #sun-icon {
+    width: 80px;
+    height: 80px;
+    top: 10px;
+    left: 10px;
+  }
+
+  #sunscreen-icon {
+    width: 120px;
+  }
+
+  #sunglasses-icon {
+    width: 120px;
+    top: 50px;
+    left: 30px;
+  }
+
+  #umbrella-icon {
+    width: 100px;
+    top: 20px;
+    left: 10px;
+  }
+
+  /* 6. Warning */
+  .warning {
+    position: static;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 16px;
+    order: 6;
+  }
+
+  /* 7. Мишка */
+  #bear-low, #bear-medium, #bear-high {
+    position: static !important;
+    width: 160px;
+    margin: 0 auto 8px auto;
+    order: 7;
+  }
+
+  /* 8. Cola */
+  #cola-can {
+    position: static !important;
+    width: 55px;
+    margin: 0 auto 8px auto;
+    order: 8;
+  }
+
+  .bear-hint {
+    bottom: auto;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  /* --- Forecast --- */
+  #daily-forecast {
+    width: 100%;
+    margin-top: 0;
+    padding: 16px 16px 32px 16px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px 20px 0 0;
+  }
+
+  .forecast-title {
+    font-size: 15px;
+    color: white;
+  }
+
+  .forecast-cards {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .forecast-card {
+    border-radius: 16px;
+  }
+
+  .forecast-uvi {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Прячем колу внутри .icon на мобильном */
+  .icon #cola-can {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+ .bear-hint {
+  position: static !important;
+  transform: none;
+  left: auto;
+  bottom: auto;
+  top: auto;
+  text-align: center;
+  margin: 8px auto;
+  order: 61;
+  white-space: nowrap;
+}
+
+.warning {
+  order: 6;
+}
+
+#bear-low, #bear-medium, #bear-high {
+  position: static !important;
+  width: 160px;
+  margin: 0 auto 0 auto;
+  order: 70;
+}
+}
+

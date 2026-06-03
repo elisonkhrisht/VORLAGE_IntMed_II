@@ -77,7 +77,17 @@ function hideIcons() {
   document.querySelector("#bear-low").style.display = "none";
   document.querySelector("#bear-medium").style.display = "none";
   document.querySelector("#bear-high").style.display = "none";
+
+
+// Скрываем колу и убираем hint
+ const cola = document.querySelector("#cola-can");
+  if (cola) cola.style.display = "none";
+  document.querySelector(".bear-hint")?.remove();
+
+
 }
+
+
 
 // --- Время города ---
 function getCityTime(timezone) {
@@ -133,6 +143,8 @@ function processUVData(city, uvData) {
     warning.textContent = "UV is low at the moment.";
     sunIcon.style.display = "block";
     document.querySelector("#bear-low").style.display = "block";
+    setTimeout(initColaDrag, 1500);
+    
   } else if (uv < 6) {
     uvCard.classList.add("medium");
     risk.textContent = "Medium risk";
@@ -345,9 +357,15 @@ document.querySelectorAll(".bear").forEach(bear => {
   const tooltip = document.createElement("div");
   tooltip.className = "bear-tooltip";
   tooltip.textContent = bear.dataset.tooltip;
-  bear.parentElement.appendChild(tooltip);
+  document.querySelector("#uv-card").appendChild(hint);
 
   bear.addEventListener("mouseenter", () => {
+    const cola = document.querySelector("#cola-can");
+    const colaGiven = !cola || cola.style.display === "none";
+
+    // Для bear-low показываем tooltip только если кола уже отдана
+    if (bear.id === "bear-low" && !colaGiven) return;
+
     const rect = bear.getBoundingClientRect();
     const parentRect = bear.parentElement.getBoundingClientRect();
     tooltip.style.left = (rect.left - parentRect.left + rect.width / 2) + "px";
@@ -359,3 +377,58 @@ document.querySelectorAll(".bear").forEach(bear => {
     tooltip.classList.remove("visible");
   });
 });
+
+
+
+
+function initColaDrag() {
+  const cola = document.querySelector("#cola-can");
+  const bear = document.querySelector("#bear-low");
+  if (!cola || !bear) return;
+
+  // На мобильном перемещаем колу после мишки
+  if (window.innerWidth <= 480) {
+    bear.parentElement.insertAdjacentElement("afterend", cola);
+    cola.style.cssText = "display: block; width: 55px; margin: 8px auto 0 auto; position: static;";
+  } else {
+    cola.style.display = "block";
+  }
+
+  // Показываем hint на мишке
+  
+  const hint = document.createElement("div");
+  hint.className = "bear-hint bear-hint--persistent";
+  hint.textContent = "Pass me a refreshment, please 🥤";
+  hint.style.animation = "none"; 
+  hint.style.opacity = "1";  
+  bear.parentElement.appendChild(hint);
+
+  cola.style.display = "block";
+
+  // Drag events
+  cola.addEventListener("dragstart", (e) => {
+    e.dataTransfer.setData("text/plain", "cola");
+  });
+
+  bear.addEventListener("dragover", (e) => {
+    e.preventDefault();
+  });
+
+  bear.addEventListener("drop", (e) => {
+    e.preventDefault();
+    // Кола исчезает
+    cola.style.display = "none";
+    // Hint убирается
+    document.querySelector(".bear-hint")?.remove();
+    // Показываем tooltip мишки
+    const tooltip = bear.parentElement.querySelector(".bear-tooltip");
+    if (tooltip) {
+      const rect = bear.getBoundingClientRect();
+      const parentRect = bear.parentElement.getBoundingClientRect();
+      tooltip.style.left = (rect.left - parentRect.left + rect.width / 2) + "px";
+      tooltip.style.bottom = (parentRect.bottom - rect.top + 8) + "px";
+      tooltip.classList.add("visible");
+      setTimeout(() => tooltip.classList.remove("visible"), 3000);
+    }
+  });
+}
