@@ -456,9 +456,41 @@ button:hover {
 
 #bear-low, #bear-medium, #bear-high {
   display: none;
-  width: 220px;
+  width: 280px;
   height: auto;
   position: absolute;
   bottom: 0px;
  
 }
+
+.bear {
+  position: relative;
+  cursor: pointer;
+}
+
+.bear-tooltip {
+  position: absolute;
+  background: white;
+  color: #1d1d1d;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 20px;
+  white-space: pre;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.bear-tooltip.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
