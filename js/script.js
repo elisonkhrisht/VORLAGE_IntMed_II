@@ -238,6 +238,7 @@ document.querySelectorAll(".bear").forEach(bear => {
   }
 });
 
+
 let icecreamInitialized = false;
 // Drag-and-Drop-Interaktion für das Eis initialisieren
 function initIcecreamDrag() {
@@ -290,4 +291,21 @@ icecream.style.display = "block";
     if (!isDragging) return;
     isDragging = false;
     const icRect = icecream.getBoundingClientRect();
-    const bearRect = bea
+    const bearRect = bear.getBoundingClientRect();
+    const cx = icRect.left + icRect.width / 2;
+    const cy = icRect.top + icRect.height / 2;
+    const isOnBear = cx >= bearRect.left && cx <= bearRect.right && cy >= bearRect.top && cy <= bearRect.bottom;
+    if (isOnBear) {
+      icecream.style.display = "none";
+      icecream.style.transform = "";
+      document.querySelector(".bear-hint")?.remove();
+      const tooltip = document.body.querySelector(".bear-tooltip");
+      if (tooltip) { showTooltip(tooltip, bear); setTimeout(() => tooltip.classList.remove("visible"), 3000); }
+    } else {
+      icecream.style.transition = "transform 0.25s ease";
+      icecream.style.transform = "translate(0, 0)";
+    }
+  });
+}
+
+
