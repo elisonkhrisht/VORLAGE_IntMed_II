@@ -2,14 +2,18 @@
     box-sizing: border-box;
 }
 
+/* Grundlayout der Seite */
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background: #f2f2f2;
+    background: #9aa9ff;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 40px;
+    position: relative;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
 }
 
 header {
@@ -22,12 +26,14 @@ header h1 {
     color: #1d1d1d;
 }
 
+/* Stadtbuttons */
 .city-buttons {
     display: flex;
     gap: 12px;
     margin-bottom: 35px;
 }
 
+/* Allgemeine Button-Styles */
 button {
     border: none;
     background: #bdf0dd;
@@ -36,8 +42,23 @@ button {
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Aktiver Stadtbutton */
+.city-buttons button.active {
+    background-color: #7e79ed;
+    color: white;
+    box-shadow: 0 0 0 4px #FFD166;
+    border: none;
+}
+
+/* UV-Karte – Grundgrösse Desktop */
 .uv-card {
     width: 750px;
     height: 480px;
@@ -49,20 +70,12 @@ button {
     box-shadow: none;
 }
 
-/* states */
-.low {
-    background: linear-gradient(180deg, #9fc9f0 0%, #7e79ed 100%);
-}
+/* Hintergrundfarben je nach UV-Stufe */
+.low    { background: linear-gradient(180deg, #9fc9f0 0%, #7e79ed 100%); }
+.medium { background: linear-gradient(180deg, #ffc85d 0%, #ff7447 100%); }
+.high   { background: linear-gradient(180deg, #d84c61 0%, #f27d72 100%); }
 
-.medium {
-    background: linear-gradient(180deg, #ffc85d 0%, #ff7447 100%);
-}
-
-.high {
-    background: linear-gradient(180deg, #d84c61 0%, #f27d72 100%);
-}
-
-/* left shape */
+/* Dekorative Welle links */
 .wave {
     position: absolute;
     left: 0;
@@ -73,15 +86,10 @@ button {
     clip-path: path("M0 0 H145 C112 105 110 190 125 270 C148 370 138 440 95 480 H0 Z");
 }
 
-.medium .wave {
-    background: linear-gradient(180deg, #ffb805f6, #d43627);
-}
+.medium .wave { background: linear-gradient(180deg, #ffb805f6, #d43627); }
+.high .wave   { background: linear-gradient(180deg, #ff5100f6, #8f2118); }
 
-.high .wave {
-    background: linear-gradient(180deg, #ff5100f6, #8f2118);
-}
-
-/* title */
+/* Titel der Karte */
 .title {
     position: absolute;
     top: 45px;
@@ -94,7 +102,7 @@ button {
     transform: translateX(55px);
 }
 
-/* intro */
+/* Einleitungstext */
 .intro {
     position: absolute;
     top: 100px;
@@ -107,7 +115,7 @@ button {
     margin: 0;
 }
 
-/* side info */
+/* Best time / Avoid-Bereich */
 .side-info {
     position: absolute;
     left: 235px;
@@ -120,7 +128,7 @@ button {
     margin: 0 0 22px 0;
 }
 
-/* UV box */
+/* Info-Box mit UV-Zahl, Risiko und Stadtzeit */
 .info-box {
     position: absolute;
     right: 115px;
@@ -132,17 +140,18 @@ button {
     background: #bdf0dd;
     color: #1d1d1d;
 }
+
+.medium .info-box { background: #ffe27a; }
+.high .info-box   { background: #c9344d; color: white; }
+
+/* UV-Zahl gross */
 #uv-number {
     white-space: nowrap;
-}
-
-.medium .info-box {
-    background: #ffe27a;
-}
-
-.high .info-box {
-    background: #c9344d;
-    color: white;
+    color: #1d1d1d;
+    font-size: 55px;
+    line-height: 1;
+    font-weight: 700;
+    margin: 0 0 8px 0;
 }
 
 #risk {
@@ -150,14 +159,6 @@ button {
     font-size: 14px;
     font-weight: 500;
     margin: 0 0 4px 0;
-}
-
-#uv-number {
-    color: #1d1d1d;
-    font-size: 55px;
-    line-height: 1;
-    font-weight: 700;
-    margin: 0 0 8px 0;
 }
 
 #advice {
@@ -168,21 +169,14 @@ button {
     margin: 0;
 }
 
+/* Textfarbe bei hohem UV-Level */
 .high #risk,
 .high #uv-number,
 .high #advice {
     color: white;
 }
 
-/* icon */
-.icon {
-    position: absolute;
-    right: 75px;
-    top: 188px;
-    font-size: 60px;
-}
-
-/* warning */
+/* Warnungstext unten in der Karte */
 .warning {
     position: absolute;
     left: 235px;
@@ -193,6 +187,8 @@ button {
     font-weight: 500;
     margin: 0;
 }
+
+/* Zeitangaben mit Icon */
 .time-item {
     display: flex;
     align-items: center;
@@ -209,11 +205,7 @@ button {
     height: 30px;
 }
 
-
-
-
-
-
+/* Icons standardmässig versteckt, werden per JS eingeblendet */
 #sun-icon,
 #sunglasses-icon,
 #sunscreen-icon,
@@ -221,6 +213,7 @@ button {
     display: none;
 }
 
+/* Icon-Container rechts in der Karte */
 .icon {
     position: absolute;
     right: 35px;
@@ -234,7 +227,6 @@ button {
     object-fit: contain;
 }
 
-/* LOW */
 #sun-icon {
     width: 115px;
     height: 115px;
@@ -242,7 +234,6 @@ button {
     left: 45px;
 }
 
-/* MEDIUM */
 #sunscreen-icon {
     width: 200px;
     height: auto;
@@ -257,10 +248,8 @@ button {
     top: 70px;
     left: 48px;
     z-index: 2;
-
 }
 
-/* HIGH */
 #umbrella-icon {
     width: 165px;
     height: auto;
@@ -269,9 +258,10 @@ button {
     transform-origin: center bottom;
 }
 
+/* Suchleiste */
 .search-bar {
     display: flex;
-    justify-content:flex-start;
+    justify-content: flex-start;
     align-items: center;
     gap: 12px;
     margin-bottom: 35px;
@@ -282,51 +272,40 @@ button {
     width: 280px;
     min-width: 280px;
     height: 48px;
-
     padding: 0 18px;
     border: none;
     border-radius: 18px;
-
     font-size: 16px;
     font-family: Inter, sans-serif;
-    
 }
 
-
+#city-input:focus {
+    outline: 2px solid #FFD166;
+    outline-offset: 0px;
+}
 
 #search-btn {
     height: 48px;
-
     background: #8B8BF7;
     color: white;
-
     border: none;
     border-radius: 18px;
-
     padding: 0 24px;
-
     font-size: 16px;
     font-family: Inter, sans-serif;
-
     cursor: pointer;
     white-space: nowrap;
-
     position: relative;
-    
 }
 
-
+/* Ladeoverlay während API-Anfrage */
 .loading-overlay {
     display: none;
-
     position: absolute;
     inset: 0;
-
-    background: rgba(0, 0, 0, 0.15);
-
+    background: rgba(0,0,0,0.15);
     justify-content: center;
     align-items: center;
-
     z-index: 999;
 }
 
@@ -336,213 +315,161 @@ button {
     transform: translateY(15px);
 }
 
+/* Stadtname und lokale Uhrzeit */
 #location-time {
     margin-top: 8px;
-    color: #8B8BF7; /* можно задать цвет текста, чтобы совпадал с остальными элементами */
+    color: #8B8BF7;
     font-size: 24px;
     font-weight: 600;
-   
 }
 
-    #location-time.small {
+#location-time.small {
     font-size: 20px;
 }
 
-
-/* все кнопки */
-button {
-    border: none;
-    background: #bdf0dd;
-    padding: 12px 28px;
-    border-radius: 40px;
-    font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    cursor: pointer;
-    
-    /* добавляем плавное увеличение */
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* при наведении */
-button:hover {
-    transform: scale(1.05); /* увеличиваем на 5% */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* optional, тень для эффекта «выдвижения» */
-}
-
-/* Состояние выбранного города */
-.city-buttons button.active {
-  background-color: #7e79ed;
-  color: white;
-  box-shadow: 0 0 0 4px #FFD166;
-  border: none;
-}
-
-
-
-
-
+/* Tagesprognose-Block */
 #daily-forecast {
-  margin-top: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 750px;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 750px;
+    transition: opacity 0.3s ease;
 }
 
 .forecast-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0 0 16px 0;
-  text-align: left;
-  width: 100%;
-  padding-left: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 16px 0;
+    text-align: left;
+    width: 100%;
+    padding-left: 4px;
 }
 
 .forecast-cards {
-  display: flex;
-  gap: 16px;
-  width: 100%;
+    display: flex;
+    gap: 16px;
+    width: 100%;
 }
 
+/* Einzelne Prognosekarte */
 .forecast-card {
-  flex: 1;
-  border-radius: 30px;
-  padding: 24px 20px;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-  background: #bdf0dd; /* default: low */
+    flex: 1;
+    border-radius: 30px;
+    padding: 24px 20px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    background: #bdf0dd;
 }
 
-.forecast-card.medium {
-  background: #ffe27a;
-}
-
-.forecast-card.high {
-  background: #c9344d;
-}
+.forecast-card.medium { background: #ffe27a; }
+.forecast-card.high   { background: #c9344d; }
 
 .forecast-card.high .forecast-period,
 .forecast-card.high .forecast-uvi,
 .forecast-card.high .forecast-risk,
 .forecast-card.high .forecast-advice {
-  color: white;
+    color: white;
 }
 
 .forecast-period {
-  font-size: 13px;
-  font-weight: 500;
-  color: #474444;
-  margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #474444;
+    margin-bottom: 10px;
 }
 
 .forecast-uvi {
-  font-size: 52px;
-  font-weight: 700;
-  line-height: 1;
-  color: #1d1d1d;
-  margin-bottom: 6px;
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1;
+    color: #1d1d1d;
+    margin-bottom: 6px;
 }
 
 .forecast-risk {
-  font-size: 14px;
-  font-weight: 600;
-  color: #474444;
-  margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #474444;
+    margin-bottom: 4px;
 }
 
 .forecast-advice {
-  font-size: 12px;
-  color: #474444;
-  font-style: italic;
-  line-height: 1.3;
+    font-size: 12px;
+    color: #474444;
+    font-style: italic;
+    line-height: 1.3;
 }
 
-#bear-low, #bear-medium, #bear-high {
-  display: none;
-  width: 280px;
-  height: auto;
-  position: absolute;
-  bottom: 0px;
- 
-}
-
-.bear {
-  position: relative;
-  cursor: pointer;
-}
-
-.bear-tooltip {
-  position: absolute;
-  background: white;
-  color: #1d1d1d;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 8px 14px;
-  border-radius: 20px;
-  white-space: pre;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  pointer-events: none;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  bottom: 105%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-}
-
-.bear-tooltip.visible {
-  visibility: visible;
-  opacity: 1;
+/* Bären – standardmässig versteckt, werden per JS eingeblendet */
+#bear-low,
+#bear-medium,
+#bear-high {
+    display: none;
+    width: 280px;
+    height: auto;
+    position: absolute;
+    bottom: 0px;
 }
 
 .bear {
-  cursor: pointer;
-  transition: transform 0.2s ease;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .bear:hover {
-  transform: scale(1.08);
+    transform: scale(1.08);
 }
 
+/* Tooltip beim Hover über den Bären */
+.bear-tooltip {
+    position: absolute;
+    background: white;
+    color: #1d1d1d;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 20px;
+    white-space: pre;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    bottom: 105%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.bear-tooltip.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Wrapper für Karte und Hero-Titel */
 .content-wrapper {
-  width: 750px;
-  position: relative;
-}
-
-.hero-title {
-  display: block;
-  width: 350px;
-  height: auto;
-  position: absolute;
-  right: -215px;
-  top: -15px;
-  filter: drop-shadow(0px 6px 20px rgba(0,0,0,0.35));
-  z-index: 100;
-}
-
-body {
-    background: #9aa9ff;
+    width: 750px;
     position: relative;
 }
+
+/* Dekorativer Hero-Titel rechts */
 .hero-title {
-  filter: drop-shadow(0px 6px 20px rgba(0,0,0,0.35));
+    display: block;
+    width: 350px;
+    height: auto;
+    position: absolute;
+    right: -215px;
+    top: -15px;
+    filter: drop-shadow(0px 6px 20px rgba(0,0,0,0.35));
+    z-index: 100;
 }
 
-
-
-#daily-forecast {
-  transition: opacity 0.3s ease;
-}
-
-#city-input:focus {
-  outline: 2px solid #FFD166;
-  outline-offset: 0px;
-}
-
+/* Karte zunächst unsichtbar – wird erst nach API-Antwort eingeblendet */
 #uv-card {
     opacity: 0;
     transition: opacity 0.5s ease;
@@ -552,476 +479,343 @@ body {
     opacity: 1;
 }
 
+/* Hinweis-Bubble beim Eis-Drag */
 .bear-hint {
-  position: absolute;
-  bottom: 230px;
-  left: 30px;
-  background: white;
-  color: #1d1d1d;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 8px 14px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  animation: fadeInOut 3s ease forwards;
-  pointer-events: none;
-  z-index: 10;
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-#cola-can {
-  display: none;
-  width: 70px;
-  height: auto;
-  position: absolute;
-  right: 15px;
-  bottom: 15px;
-  cursor: grab;
-  z-index: 5;
-  transition: transform 0.2s ease;
-}
-
-#cola-can:hover {
-  transform: scale(1.1);
-}
-
-#cola-can:active {
-  cursor: grabbing;
+    position: absolute;
+    bottom: 230px;
+    left: 30px;
+    background: white;
+    color: #1d1d1d;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: fadeInOut 3s ease forwards;
+    pointer-events: none;
+    z-index: 10;
+    text-align: center;
+    white-space: normal;
 }
 
 .bear-hint--persistent {
-  animation: none !important;
-  opacity: 1 !important;
+    animation: none !important;
+    opacity: 1 !important;
+}
+
+@keyframes fadeInOut {
+    0%   { opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 @keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
 }
 
-
-
-/* === TABLET (до 900px) === */
-@media (max-width: 900px) {
-  .content-wrapper {
-    width: 100%;
-    padding: 0 20px;
-  }
-
-  .uv-card {
-    width: 100%;
-    height: auto;
-    min-height: 420px;
-  }
-
-  #daily-forecast {
-    width: 100%;
-  }
-
-  .hero-title {
+/* Eis-Icon – draggable, standardmässig versteckt */
+#icecream {
     display: none;
-  }
-}
-
-/* === MOBILE (до 600px) === */
-@media (max-width: 600px) {
-  body {
-    padding: 20px 16px;
-  }
-
-  .search-bar {
-    width: 100%;
-  }
-
-  #city-input {
-    width: 100%;
-    min-width: unset;
-    flex: 1;
-  }
-
-  .city-buttons {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .city-buttons button {
-    padding: 10px 18px;
-    font-size: 14px;
-  }
-
-  .uv-card {
-    width: 100%;
-    min-height: 380px;
-    border-radius: 20px;
-  }
-
-  .wave {
-    clip-path: path("M0 0 H110 C85 80 83 150 95 210 C112 290 105 345 72 380 H0 Z");
-    width: 130px;
-  }
-
-  .title {
-    font-size: 20px;
-    transform: translateX(35px);
-    top: 30px;
-  }
-
-  .intro {
-    display: none;
-  }
-
-  .side-info {
-    left: 170px;
-    top: 160px;
-    font-size: 12px;
-  }
-
-  .info-box {
-    right: 10px;
-    top: 130px;
-    width: 180px;
-    padding: 12px 16px;
-  }
-
-  #uv-number {
-    font-size: 40px;
-  }
-
-  #location-time {
-    font-size: 16px;
-  }
-
-  #location-time.small {
-    font-size: 13px;
-  }
-
-  .warning {
-    left: 170px;
-    bottom: 20px;
-    width: 200px;
-  }
-
-  #bear-low, #bear-medium, #bear-high {
-    width: 180px;
-  }
-
-  .icon {
-    right: 5px;
-    top: 120px;
-    width: 130px;
-    height: 180px;
-  }
-
-  .forecast-cards {
-    flex-direction: column;
-  }
-
-  .forecast-uvi {
-    font-size: 36px;
-  }
-}
-
-/* === TABLET (до 900px) === */
-@media (max-width: 900px) {
-  .content-wrapper {
-    width: 100%;
-    padding: 0 20px;
-  }
-
-  .uv-card {
-    width: 100%;
+    width: 70px;
     height: auto;
-    min-height: 420px;
-  }
-
-  #daily-forecast {
-    width: 100%;
-  }
-}
-
-/* === MOBILE (до 480px) === */
-@media (max-width: 480px) {
-
-  body {
-    padding: 0;
-    background: linear-gradient(180deg, #9fc9f0 0%, #7e79ed 100%);
-    align-items: stretch;
-  }
-
-  main {
-    width: 100%;
-  }
-
-  .content-wrapper {
-    width: 100%;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* --- Лого вверху --- */
-  .hero-title {
-    position: static;
-    display: block;
-    width: 200px;
-    height: auto;
-    margin: 24px auto 16px auto;
-    filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2));
-    z-index: 1;
-  }
-
-  /* --- Поиск --- */
-  .search-bar {
-    margin: 0 16px 12px 16px;
-    width: auto;
-  }
-
-  #city-input {
-    width: 100%;
-    min-width: unset;
-    flex: 1;
-    background: rgba(255,255,255,0.9);
-  }
-
-  /* --- Кнопки городов --- */
-  .city-buttons {
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0 16px 16px 16px;
-    justify-content: center;
-  }
-
-  .city-buttons button {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-
-  /* --- Карточка UV --- */
-  .uv-card {
-    width: 100%;
-    height: auto;
-    min-height: unset;
-    border-radius: 0;
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 16px 24px 16px;
-    background: transparent !important;
-  }
-
-  .wave {
-    display: none;
-  }
-
-  /* 1. Заголовок */
-  .title {
-    position: static;
-    transform: none;
-    font-size: 22px;
-    text-align: center;
-    margin-bottom: 8px;
-    order: 1;
-  }
-
-  /* 2. Интро текст */
-  .intro {
-    position: static;
-    width: 100%;
-    font-size: 12px;
-    text-align: center;
-    margin-bottom: 16px;
-    order: 2;
-  }
-
-  /* 3. Info box */
-  .info-box {
-    position: static;
-    width: 100%;
-    max-height: none !important;
-    border-radius: 20px;
-    padding: 16px 20px;
-    margin-bottom: 16px;
-    order: 3;
-  }
-
-  #uv-number {
-    font-size: 60px;
-  }
-
-  #location-time {
-    font-size: 18px;
-  }
-
-  #location-time.small {
-    font-size: 14px;
-  }
-
-  /* 4. Side info (Best time / Avoid) */
-  .side-info {
-    position: static;
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    justify-content: center;
-    margin-bottom: 16px;
-    order: 4;
-  }
-
-  .side-info p {
-    margin: 0;
-    font-size: 13px;
-  }
-
-  .time-item {
-    margin-bottom: 0;
-  }
-
-  /* 5. Иконка солнца — справа вверху карточки */
-  .icon {
     position: absolute;
-    right: 10px;
-    top: 120px;
-    width: 100px;
-    height: 100px;
-    order: 5;
-  }
-
-  #sun-icon {
-    width: 80px;
-    height: 80px;
-    top: 10px;
-    left: 10px;
-  }
-
-  #sunscreen-icon {
-    width: 120px;
-  }
-
-  #sunglasses-icon {
-    width: 120px;
-    top: 50px;
-    left: 30px;
-  }
-
-  #umbrella-icon {
-    width: 100px;
-    top: 20px;
-    left: 10px;
-  }
-
-  /* 6. Warning */
-  .warning {
-    position: static;
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    margin-bottom: 16px;
-    order: 6;
-  }
-
-  /* 7. Мишка */
-  #bear-low, #bear-medium, #bear-high {
-    position: static !important;
-    width: 160px;
-    margin: 0 auto 8px auto;
-    order: 7;
-  }
-
-  /* 8. Cola */
-  #cola-can {
-    position: static !important;
-    width: 55px;
-    margin: 0 auto 8px auto;
-    order: 8;
-  }
-
-  
-
-  /* --- Forecast --- */
-  #daily-forecast {
-    width: 100%;
-    margin-top: 0;
-    padding: 16px 16px 32px 16px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 20px 20px 0 0;
-  }
-
-  .forecast-title {
-    font-size: 15px;
-    color: white;
-  }
-
-  .forecast-cards {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .forecast-card {
-    border-radius: 16px;
-  }
-
-  .forecast-uvi {
-    font-size: 40px;
-  }
+    right: 15px;
+    bottom: 15px;
+    cursor: grab;
+    z-index: 5;
+    transition: transform 0.2s ease;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
+#icecream:hover  { transform: scale(1.1); }
+#icecream:active { cursor: grabbing; }
 
 
+/* === MOBILE bis 480px === */
 @media (max-width: 480px) {
- .bear-hint {
-  position: static !important;
-  transform: none;
-  left: auto;
-  bottom: auto;
-  top: auto;
-  text-align: center;
-  margin: 8px auto;
-  order: 61;
-  white-space: nowrap;
+    html {
+        background: linear-gradient(180deg, #9fc9f0 0%, #7e79ed 100%);
+    }
+
+    body {
+        padding: 0;
+        background: linear-gradient(180deg, #9fc9f0 0%, #7e79ed 100%);
+        align-items: stretch;
+    }
+
+    header {
+        display: none;
+    }
+
+    main {
+        width: 100%;
+    }
+
+    .content-wrapper {
+        width: 100%;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Hero-Titel oben zentriert auf Mobile */
+    .hero-title {
+        position: static;
+        display: block;
+        width: 280px;
+        height: auto;
+        margin: 24px auto 16px auto;
+        filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.2));
+        z-index: 1;
+    }
+
+    .search-bar {
+        margin: 0 16px 12px 16px;
+        width: auto;
+    }
+
+    #city-input {
+        width: 100%;
+        min-width: unset;
+        flex: 1;
+        background: rgba(255,255,255,0.9);
+        font-size: 14px;
+    }
+
+    .city-buttons {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 16px 16px 16px;
+        justify-content: center;
+    }
+
+    .city-buttons button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* Karte wird auf Mobile zu einem flex-column Layout */
+    .uv-card {
+        width: 100%;
+        height: auto;
+        min-height: unset;
+        border-radius: 0;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 16px 24px 16px;
+        background: transparent !important;
+        position: relative;
+    }
+
+    /* Welle auf Mobile ausgeblendet */
+    .wave {
+        display: none;
+    }
+
+    .title {
+        position: static;
+        transform: none;
+        font-size: 25px;
+        text-align: center;
+        margin-bottom: 8px;
+        order: 1;
+    }
+
+    .intro {
+        position: static;
+        width: 90%;
+        margin: 0 auto 12px auto;
+        font-size: 15px;
+        line-height: 1.3;
+        font-style: italic;
+        text-align: center;
+        order: 2;
+        opacity: 0.8;
+    }
+
+    .intro br {
+        display: none;
+    }
+
+    /* Info-Box nimmt volle Breite ein */
+    .info-box {
+        position: static;
+        width: 100%;
+        max-height: none !important;
+        border-radius: 20px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+        order: 3;
+    }
+
+    #uv-number {
+        font-size: 60px;
+    }
+
+    #location-time {
+        font-size: 18px;
+    }
+
+    #location-time.small {
+        font-size: 14px;
+    }
+
+    /* Icon absolut positioniert rechts neben der Info-Box */
+    .icon {
+        position: absolute;
+        right: 16px;
+        top: 230px;
+        width: 90px;
+        height: 110px;
+        overflow: visible;
+        z-index: 2;
+    }
+
+    #sun-icon {
+        width: 75px;
+        height: 75px;
+        top: 0;
+        left: 0;
+    }
+
+    #sunscreen-icon {
+        width: 100px;
+        top: -5px;
+        left: -10px;
+    }
+
+    #sunglasses-icon {
+        width: 100px;
+        top: 45px;
+        left: -10px;
+    }
+
+    #umbrella-icon {
+        width: 80px;
+        top: 0;
+        left: 5px;
+    }
+
+    /* Best time / Avoid horizontal nebeneinander */
+    .side-info {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        gap: 24px;
+        justify-content: center;
+        margin-bottom: 16px;
+        order: 4;
+    }
+
+    .side-info p {
+        margin: 0;
+        font-size: 13px;
+    }
+
+    .time-item {
+        margin-bottom: 0;
+    }
+
+    .warning {
+        position: static;
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        margin-bottom: 16px;
+        order: 6;
+    }
+
+    .bear-hint {
+        position: static !important;
+        transform: none;
+        left: auto;
+        bottom: auto;
+        top: auto;
+        text-align: center;
+        margin: 8px auto;
+        order: 68;
+        white-space: normal;
+    }
+
+    /* Bären auf Mobile statisch und zentriert */
+    #bear-low,
+    #bear-medium,
+    #bear-high {
+        position: static !important;
+        width: 160px;
+        margin: 0 auto;
+        order: 69;
+    }
+
+    #icecream {
+        position: static !important;
+        display: none;
+        width: 55px;
+        margin: 8px auto;
+        order: 70;
+    }
+
+    /* Prognose-Block auf Mobile */
+    #daily-forecast {
+        width: 100%;
+        margin-top: 0;
+        padding: 16px 16px 32px 16px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 20px 20px 0 0;
+    }
+
+    .forecast-title {
+        font-size: 15px;
+        color: white;
+    }
+
+    .forecast-cards {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .forecast-card {
+        border-radius: 16px;
+    }
+
+    .forecast-uvi {
+        font-size: 40px;
+    }
 }
 
-.warning {
-  order: 6;
-}
-
-#bear-low, #bear-medium, #bear-high {
-  position: static !important;
-  width: 160px;
-  margin: 0 auto 0 auto;
-  order: 70;
-}
-}
-
-@media (max-width: 480px) {
-  #cola-can {
-
+/* Zeilenumbruch bei Stadtbuttons nur auf bestimmten Mobile-Breiten */
+.city-break {
     display: none;
-    width: 55px;
-    margin: 8px auto;
-    order: 72;
-  }
 }
 
-#cola-can {
-  touch-action: none;
-  user-select: none;
-  -webkit-user-drag: none;
+@media (min-width: 353px) and (max-width: 480px) {
+    .city-break {
+        display: block;
+        width: 100%;
+    }
 }
 
-@media (max-width: 480px) {
-  .bear-tooltip {
-    left: 50%;
-    bottom: 170px;
-    transform: translateX(-50%);
-    max-width: 180px;
-    text-align: center;
-    white-space: normal;
-  }
+/* === TABLET 481px–900px === */
+@media (min-width: 481px) and (max-width: 900px) {
+    .content-wrapper {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    #daily-forecast {
+        width: 100%;
+    }
+
+    .hero-title {
+        display: block;
+        width: 200px;
+        right: -5px;
+        top: -20px;
+    }
 }
